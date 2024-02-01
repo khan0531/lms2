@@ -2,13 +2,26 @@ package com.example.demo.member.service.impl;
 
 import com.example.demo.components.MailComponents;
 import com.example.demo.member.entity.Member;
+import com.example.demo.member.exception.MemberNotEmailAuthException;
 import com.example.demo.member.model.MemberInput;
 import com.example.demo.member.repository.MemberRepository;
 import com.example.demo.member.service.MemberService;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,6 +32,26 @@ public class MemberServiceImpl implements MemberService {
   private final MailComponents mailComponents;
 
   @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+    Optional<Member> optionalMember = memberRepository.findById(username);
+    if (!optionalMember.isPresent()) {
+      throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
+    }
+
+    Member member = optionalMember.get();
+
+    if (!member.isEmailAuthYn()) {
+      throw new MemberNotEmailAuthException("이메일 인증이 완료되지 않았습니다.");
+    }
+
+    List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+    grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+
+    return new User(member.getUserId(), member.getPassword(), grantedAuthorities);
+  }
+
+  @Override
   public boolean register(MemberInput parameter) {
 
     Optional<Member> optionalMember = memberRepository.findById(parameter.getUserId());
@@ -26,12 +59,14 @@ public class MemberServiceImpl implements MemberService {
       return false;
     }
 
+    String encodedPassword = BCrypt.hashpw(parameter.getPassword(), BCrypt.gensalt());
+
     String uuid = UUID.randomUUID().toString();
 
     Member member = Member.builder()
         .userId(parameter.getUserId())
         .userName(parameter.getUserName())
-        .password(parameter.getPassword())
+        .password(encodedPassword)
         .phone(parameter.getPhone())
         .emailAuthYn(false)
         .emailAuthKey(uuid)
@@ -62,4 +97,5 @@ public class MemberServiceImpl implements MemberService {
 
     return true;
   }
+
 }

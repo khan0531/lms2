@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.main.controller;
 
 // MainPage 클래스의 목적
 // 매핑하기 위해서
