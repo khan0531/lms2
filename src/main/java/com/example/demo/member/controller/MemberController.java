@@ -27,12 +27,12 @@ public class MemberController {
     return "member/login";
   }
 
-  @GetMapping("/member/reset/password")
+  @GetMapping("/member/find/password")
   public String findPassword() {
     return "member/find_password";
   }
 
-  @PostMapping("/member/reset/password")
+  @PostMapping("/member/find/password")
   public String findPasswordSubmit(
       Model model,
       ResetPasswordInput parameter) {
