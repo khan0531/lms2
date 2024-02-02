@@ -1,4 +1,4 @@
-package com.example.demo.admin;
+package com.example.demo.admin.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 @RequiredArgsConstructor
-public class AdminMainController {
+public class AdminMemberController {
 
 
-  @GetMapping("/admin/main.do")
-  public String main() {
-    return "admin/main";
+  @GetMapping("/admin/member/list.do")
+  public String list() {
+    return "admin/member/list";
   }
 
 }
