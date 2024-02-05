@@ -22,4 +22,6 @@ public interface MemberService extends UserDetailsService {
   boolean checkResetPassword(String uuid);
 
   List<MemberDto> list(MemberParam parameter);
+
+  MemberDto detail(String userId);
 }

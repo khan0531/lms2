@@ -8,5 +8,6 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface MemberMapper {
 
+   long selectListCount(MemberParam parameter);
    List<MemberDto> selectList(MemberParam parameter);
 }

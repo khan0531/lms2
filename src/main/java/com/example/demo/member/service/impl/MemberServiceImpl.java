@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.util.CollectionUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -109,9 +110,30 @@ public class MemberServiceImpl implements MemberService {
   @Override
   public List<MemberDto> list(MemberParam parameter) {
 
-    return memberMapper.selectList(parameter);
+    long totalCount = memberMapper.selectListCount(parameter);
+    List<MemberDto> list = memberMapper.selectList(parameter);
+    if (!CollectionUtils.isEmpty(list)) {
+      int i = 0;
+      for(MemberDto x : list) {
+        x.setTotalCount(totalCount);
+        x.setSeq(totalCount - parameter.getPageStart() - i);
+        i++;
+      }
+    }
+    return list;
+  }
 
-//    return memberRepository.findAll();
+  @Override
+  public MemberDto detail(String userId) {
+
+    Optional<Member> optionalMember  = memberRepository.findById(userId);
+    if (!optionalMember.isPresent()) {
+      return null;
+    }
+
+    Member member = optionalMember.get();
+
+    return MemberDto.of(member);
   }
 
   @Override

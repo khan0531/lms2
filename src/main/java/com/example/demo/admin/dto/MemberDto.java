@@ -1,5 +1,6 @@
 package com.example.demo.admin.dto;
 
+import com.example.demo.member.entity.Member;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,4 +29,24 @@ public class MemberDto {
   private LocalDateTime resetPasswordLimitDt;
 
   private boolean adminYn;
+
+  long totalCount;
+  long seq;
+
+  public static MemberDto of(Member member) {
+    return MemberDto.builder()
+        .userId(member.getUserId())
+        .userName(member.getUserName())
+        .phone(member.getPhone())
+        .password(member.getPassword())
+        .createdAt(member.getCreatedAt())
+        .updatedAt(member.getUpdatedAt())
+        .emailAuthYn(member.isEmailAuthYn())
+        .emailAuthDt(member.getEmailAuthDt())
+        .emailAuthKey(member.getEmailAuthKey())
+        .resetPasswordKey(member.getResetPasswordKey())
+        .resetPasswordLimitDt(member.getResetPasswordLimitDt())
+        .adminYn(member.isAdminYn())
+        .build();
+  }
 }

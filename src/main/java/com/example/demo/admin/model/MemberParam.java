@@ -3,8 +3,7 @@ package com.example.demo.admin.model;
 import lombok.Data;
 
 @Data
-public class MemberParam {
+public class MemberParam extends CommonParam {
 
-  String searchType;
-  String searchValue;
+  String userId;
 }
