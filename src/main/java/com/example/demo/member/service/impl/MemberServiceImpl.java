@@ -1,5 +1,8 @@
 package com.example.demo.member.service.impl;
 
+import com.example.demo.admin.dto.MemberDto;
+import com.example.demo.admin.mapper.MemberMapper;
+import com.example.demo.admin.model.MemberParam;
 import com.example.demo.components.MailComponents;
 import com.example.demo.member.entity.Member;
 import com.example.demo.member.exception.MemberNotEmailAuthException;
@@ -19,11 +22,8 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.UUID;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +31,7 @@ public class MemberServiceImpl implements MemberService {
 
   private final MemberRepository memberRepository;
   private final MailComponents mailComponents;
+  private final MemberMapper memberMapper;
 
   @Override
   public boolean sendResetPassword(ResetPasswordInput parameter) {
@@ -106,9 +107,11 @@ public class MemberServiceImpl implements MemberService {
   }
 
   @Override
-  public List<Member> list() {
+  public List<MemberDto> list(MemberParam parameter) {
 
-    return memberRepository.findAll();
+    return memberMapper.selectList(parameter);
+
+//    return memberRepository.findAll();
   }
 
   @Override

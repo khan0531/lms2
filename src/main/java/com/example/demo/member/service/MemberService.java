@@ -1,6 +1,7 @@
 package com.example.demo.member.service;
 
-import com.example.demo.member.entity.Member;
+import com.example.demo.admin.dto.MemberDto;
+import com.example.demo.admin.model.MemberParam;
 import com.example.demo.member.model.MemberInput;
 import com.example.demo.member.model.ResetPasswordInput;
 import java.util.List;
@@ -20,5 +21,5 @@ public interface MemberService extends UserDetailsService {
 
   boolean checkResetPassword(String uuid);
 
-  List<Member> list();
+  List<MemberDto> list(MemberParam parameter);
 }
