@@ -2,8 +2,9 @@ package com.example.demo.util;
 
 public class PageUtilTest {
   public static void main(String[] args) {
-    PageUtil pageUtil = new PageUtil(151, 3, "");
-    String htmlPage = pageUtil.pager();
-    System.out.println(htmlPage);
+    PageUtil pageUtil = new PageUtil(151, 10, 3, "");
+    String htmlPager = pageUtil.pager();
+
+    System.out.println(htmlPager);
   }
 }

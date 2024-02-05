@@ -28,7 +28,7 @@ public class AdminMemberController {
       totalCount = members.get(0).getTotalCount();
     }
     String queryString = parameter.getQueryString();
-    String pagerHtml = getPaperHtml(totalCount, parameter.getPageSize(), parameter.getPageIndex(), queryString);
+    String pagerHtml = BaseController.getPaperHtml(totalCount, parameter.getPageSize(), parameter.getPageIndex(), queryString);
 
     model.addAttribute("list", members);
     model.addAttribute("totalCount", totalCount);

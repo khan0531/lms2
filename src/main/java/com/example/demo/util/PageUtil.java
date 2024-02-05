@@ -25,18 +25,19 @@ public class PageUtil {
   //페이지 이동시 전달되는 파라미터
   private String queryString;
 
-  public PageUtil(long totalCount, long pageIndex, String queryString) {
+  public PageUtil(long totalCount, long pageSize, long pageIndex, String queryString) {
     this.totalCount = totalCount;
+    this.pageSize = pageSize;
     this.pageIndex = pageIndex;
     this.queryString = queryString;
   }
 
-  public PageUtil(long totalCount, long pageIndex, String queryString , long pageSize, long pageBlockSize) {
+  public PageUtil(long totalCount, long pageIndex, String queryString, long pageSize, long pageBlockSize) {
     this.totalCount = totalCount;
-    this.pageIndex = pageIndex;
-    this.queryString = queryString;
     this.pageSize = pageSize;
+    this.queryString = queryString;
     this.pageBlockSize = pageBlockSize;
+    this.pageIndex = pageIndex;
   }
 
   public String pager() {
