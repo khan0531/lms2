@@ -1,7 +1,9 @@
 package com.example.demo.member.service;
 
+import com.example.demo.member.entity.Member;
 import com.example.demo.member.model.MemberInput;
 import com.example.demo.member.model.ResetPasswordInput;
+import java.util.List;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface MemberService extends UserDetailsService {
@@ -17,4 +19,6 @@ public interface MemberService extends UserDetailsService {
   boolean resetPassword(String id, String password);
 
   boolean checkResetPassword(String uuid);
+
+  List<Member> list();
 }
