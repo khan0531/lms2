@@ -95,7 +95,7 @@
             </td>
             <td th:text="${member.createdAt}"></td>
             <td>
-              <p th:if="${member.adminYn}"> Admin </p>
+              <p th:if="${member.adminYn eq true}"> Admin </p>
               <p th:unless="${member.adminYn}"> User </p>
             </td>
           </tr>

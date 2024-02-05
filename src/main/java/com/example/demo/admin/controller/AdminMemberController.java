@@ -2,14 +2,14 @@ package com.example.demo.admin.controller;
 
 import com.example.demo.admin.dto.MemberDto;
 import com.example.demo.admin.model.MemberParam;
-import com.example.demo.member.entity.Member;
+import com.example.demo.admin.model.MemberInput;
 import com.example.demo.member.service.MemberService;
-import com.example.demo.util.PageUtil;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @RequiredArgsConstructor
@@ -46,6 +46,24 @@ public class AdminMemberController {
     model.addAttribute("member", member);
 
     return "admin/member/detail";
+  }
+
+  @PostMapping("/admin/member/status.do")
+  public String status(Model model, MemberInput parameter) {
+
+
+    boolean result = memberService.updateStatus(parameter.getUserId(), parameter.getUserStatus());
+
+    return "redirect:/admin/member/detail.do?userId=" + parameter.getUserId();
+  }
+
+  @PostMapping("/admin/member/password.do")
+  public String password(Model model, MemberInput parameter) {
+
+
+    boolean result = memberService.updatePassword(parameter.getUserId(), parameter.getPassword());
+
+    return "redirect:/admin/member/detail.do?userId=" + parameter.getUserId();
   }
 
 }

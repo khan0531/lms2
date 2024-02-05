@@ -1,4 +1,4 @@
-package com.example.demo.admin;
+package com.example.demo.admin.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

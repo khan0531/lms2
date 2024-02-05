@@ -29,6 +29,7 @@ public class MemberDto {
   private LocalDateTime resetPasswordLimitDt;
 
   private boolean adminYn;
+  String userStatus;
 
   long totalCount;
   long seq;
@@ -41,12 +42,16 @@ public class MemberDto {
         .password(member.getPassword())
         .createdAt(member.getCreatedAt())
         .updatedAt(member.getUpdatedAt())
+
         .emailAuthYn(member.isEmailAuthYn())
         .emailAuthDt(member.getEmailAuthDt())
         .emailAuthKey(member.getEmailAuthKey())
+
         .resetPasswordKey(member.getResetPasswordKey())
         .resetPasswordLimitDt(member.getResetPasswordLimitDt())
+
         .adminYn(member.isAdminYn())
+        .userStatus(member.getUserStatus())
         .build();
   }
 }
