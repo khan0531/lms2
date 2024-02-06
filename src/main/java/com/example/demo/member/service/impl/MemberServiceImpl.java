@@ -38,6 +38,28 @@ public class MemberServiceImpl implements MemberService {
   private final MemberMapper memberMapper;
 
   @Override
+  public ServiceResult updateMember(MemberInput parameter) {
+
+    String userId = parameter.getUserId();
+
+    Optional<Member> optionalMember = memberRepository.findById(userId);
+    if (!optionalMember.isPresent()) {
+      return new ServiceResult(false, "회원 정보가 존재하지 않습니다.");
+    }
+
+    Member member = optionalMember.get();
+
+    member.setPhone(parameter.getPhone());
+    member.setZipcode(parameter.getZipcode());
+    member.setAddr(parameter.getAddr());
+    member.setAddrDetail(parameter.getAddrDetail());
+    member.setUdtDt(LocalDateTime.now());
+    memberRepository.save(member);
+
+    return new ServiceResult();
+  }
+
+  @Override
   public ServiceResult updateMemberPassword(MemberInput parameter) {
 
     String userId = parameter.getUserId();
