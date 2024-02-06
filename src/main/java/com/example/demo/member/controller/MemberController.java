@@ -2,7 +2,9 @@ package com.example.demo.member.controller;
 
 
 import com.example.demo.admin.dto.MemberDto;
+import com.example.demo.course.dto.TakeCourseDto;
 import com.example.demo.course.model.ServiceResult;
+import com.example.demo.course.service.TakeCourseService;
 import com.example.demo.member.entity.Member;
 import com.example.demo.member.model.MemberInput;
 import com.example.demo.member.model.ResetPasswordInput;
@@ -10,6 +12,7 @@ import com.example.demo.member.repository.MemberRepository;
 import com.example.demo.member.service.MemberService;
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -22,7 +25,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class MemberController {
 
-   private final MemberService memberService;
+  private final MemberService memberService;
+  private final TakeCourseService takeCourseService;
 
   @RequestMapping("/member/login")
   public String login() {
@@ -103,5 +107,44 @@ public class MemberController {
     model.addAttribute("detail", detail);
 
     return "member/info";
+  }
+
+  @GetMapping("/member/password")
+  public String memberPassword(Model model, Principal principal) {
+
+    String userId = principal.getName();
+    MemberDto detail = memberService.detail(userId);
+
+    model.addAttribute("detail", detail);
+
+    return "member/password";
+  }
+
+  @PostMapping("/member/password")
+  public String memberPasswordSubmit(Model model
+      , MemberInput parameter
+      , Principal principal) {
+
+    String userId = principal.getName();
+    parameter.setUserId(userId);
+
+    ServiceResult result = memberService.updateMemberPassword(parameter);
+    if (!result.isResult()) {
+      model.addAttribute("message", result.getMessage());
+      return "common/error";
+    }
+
+    return "redirect:/member/info";
+  }
+
+  @GetMapping("/member/takecourse")
+  public String memberTakeCourse(Model model, Principal principal) {
+
+    String userId = principal.getName();
+    List<TakeCourseDto> list = takeCourseService.myCourse(userId);
+
+    model.addAttribute("list", list);
+
+    return "member/takecourse";
   }
 }

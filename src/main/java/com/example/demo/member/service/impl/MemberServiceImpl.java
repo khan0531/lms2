@@ -4,6 +4,7 @@ import com.example.demo.admin.dto.MemberDto;
 import com.example.demo.admin.mapper.MemberMapper;
 import com.example.demo.admin.model.MemberParam;
 import com.example.demo.components.MailComponents;
+import com.example.demo.course.model.ServiceResult;
 import com.example.demo.member.entity.Member;
 import com.example.demo.member.exception.MemberNotEmailAuthException;
 import com.example.demo.member.exception.MemberStopUserException;
@@ -11,6 +12,7 @@ import com.example.demo.member.model.MemberInput;
 import com.example.demo.member.model.ResetPasswordInput;
 import com.example.demo.member.repository.MemberRepository;
 import com.example.demo.member.service.MemberService;
+import com.example.demo.util.PasswordUtils;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +36,29 @@ public class MemberServiceImpl implements MemberService {
   private final MemberRepository memberRepository;
   private final MailComponents mailComponents;
   private final MemberMapper memberMapper;
+
+  @Override
+  public ServiceResult updateMemberPassword(MemberInput parameter) {
+
+    String userId = parameter.getUserId();
+
+    Optional<Member> optionalMember = memberRepository.findById(userId);
+    if (!optionalMember.isPresent()) {
+      return new ServiceResult(false, "회원 정보가 존재하지 않습니다.");
+    }
+
+    Member member = optionalMember.get();
+
+    if (!PasswordUtils.equals(parameter.getPassword(), member.getPassword())) {
+      return new ServiceResult(false, "비밀번호가 일치하지 않습니다.");
+    }
+
+    String encPassword = PasswordUtils.encPassword(parameter.getNewPassword());
+    member.setPassword(encPassword);
+    memberRepository.save(member);
+
+    return new ServiceResult(true);
+  }
 
   @Override
   public boolean sendResetPassword(ResetPasswordInput parameter) {
@@ -173,29 +198,29 @@ public class MemberServiceImpl implements MemberService {
 
     Optional<Member> optionalMember = memberRepository.findById(parameter.getUserId());
     if (optionalMember.isPresent()) {
+      //현재 userId에 해당하는 데이터 존재
       return false;
     }
 
-    String encodedPassword = BCrypt.hashpw(parameter.getPassword(), BCrypt.gensalt());
-
+    String encPassword = BCrypt.hashpw(parameter.getPassword(), BCrypt.gensalt());
     String uuid = UUID.randomUUID().toString();
 
     Member member = Member.builder()
         .userId(parameter.getUserId())
         .userName(parameter.getUserName())
-        .password(encodedPassword)
         .phone(parameter.getPhone())
+        .password(encPassword)
+        .regDt(LocalDateTime.now())
         .emailAuthYn(false)
         .emailAuthKey(uuid)
-        .createdAt(LocalDateTime.now())
         .userStatus(Member.MEMBER_STATUS_REQ)
         .build();
     memberRepository.save(member);
 
     String email = parameter.getUserId();
-    String subject = "회원가입을 축하드립니다.";
-    String text = "<p>회원가입을 축하드립니다.<p><p>아래 링크를 클릭하시면 이메일 인증이 완료됩니다.</p>"
-        + "<div><a target='_blank' href=\"http://localhost:8080/member/email-auth?id=" + uuid + "'>가입 완료</a></div>";
+    String subject = "fastlms 사이트 가입을 축하드립니다. ";
+    String text = "<p>fastlms 사이트 가입을 축하드립니다.<p><p>아래 링크를 클릭하셔서 가입을 완료 하세요.</p>"
+        + "<div><a target='_blank' href='http://localhost:8080/member/email-auth?id=" + uuid + "'> 가입 완료 </a></div>";
     mailComponents.sendMail(email, subject, text);
 
     return true;

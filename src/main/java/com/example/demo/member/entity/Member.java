@@ -19,13 +19,11 @@ public class Member implements MemberCode{
 
   @Id
   private String userId;
-
   private String userName;
-  private String password;
   private String phone;
-
-  private LocalDateTime createdAt;
-  private LocalDateTime updatedAt;
+  private String password;
+  private LocalDateTime regDt;
+  private LocalDateTime udtDt;//회원정보 수정일
 
   private boolean emailAuthYn;
   private LocalDateTime emailAuthDt;
@@ -35,5 +33,11 @@ public class Member implements MemberCode{
   private LocalDateTime resetPasswordLimitDt;
 
   private boolean adminYn;
-  private String userStatus;
+
+  private String userStatus;//이용가능한상태, 정지상태
+
+
+  private String zipcode;
+  private String addr;
+  private String addrDetail;
 }

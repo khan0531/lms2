@@ -2,6 +2,7 @@ package com.example.demo.member.service;
 
 import com.example.demo.admin.dto.MemberDto;
 import com.example.demo.admin.model.MemberParam;
+import com.example.demo.course.model.ServiceResult;
 import com.example.demo.member.model.MemberInput;
 import com.example.demo.member.model.ResetPasswordInput;
 import java.util.List;
@@ -28,4 +29,6 @@ public interface MemberService extends UserDetailsService {
   boolean updateStatus(String userId, String userStatus);
 
   boolean updatePassword(String userId, String password);
+
+  ServiceResult updateMemberPassword(MemberInput parameter);
 }
