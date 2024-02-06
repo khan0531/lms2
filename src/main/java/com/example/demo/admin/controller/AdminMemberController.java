@@ -3,6 +3,7 @@ package com.example.demo.admin.controller;
 import com.example.demo.admin.dto.MemberDto;
 import com.example.demo.admin.model.MemberParam;
 import com.example.demo.admin.model.MemberInput;
+import com.example.demo.course.controller.BaseController;
 import com.example.demo.member.service.MemberService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @RequiredArgsConstructor
-public class AdminMemberController {
+public class AdminMemberController extends BaseController{
 
   private final MemberService memberService;
 
@@ -28,7 +29,7 @@ public class AdminMemberController {
       totalCount = members.get(0).getTotalCount();
     }
     String queryString = parameter.getQueryString();
-    String pagerHtml = BaseController.getPaperHtml(totalCount, parameter.getPageSize(), parameter.getPageIndex(), queryString);
+    String pagerHtml = getPaperHtml(totalCount, parameter.getPageSize(), parameter.getPageIndex(), queryString);
 
     model.addAttribute("list", members);
     model.addAttribute("totalCount", totalCount);

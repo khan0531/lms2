@@ -1,4 +1,4 @@
-package com.example.demo.admin.controller;
+package com.example.demo.course.controller;
 
 import com.example.demo.util.PageUtil;
 
