@@ -27,8 +27,7 @@ public interface TakeCourseService {
      * 내 수강내역 목록
      */
     List<TakeCourseDto> myCourse(String userId);
-    
-    
+
     /**
      * 수강신청 취소 처리
      */

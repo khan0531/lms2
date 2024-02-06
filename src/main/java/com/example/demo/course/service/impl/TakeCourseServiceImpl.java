@@ -38,8 +38,6 @@ public class TakeCourseServiceImpl implements TakeCourseService {
         }
         
         return list;
-        
-        
     }
     
     @Override
