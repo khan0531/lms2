@@ -1,11 +1,14 @@
 package com.example.demo.member.controller;
 
 
+import com.example.demo.admin.dto.MemberDto;
+import com.example.demo.course.model.ServiceResult;
 import com.example.demo.member.entity.Member;
 import com.example.demo.member.model.MemberInput;
 import com.example.demo.member.model.ResetPasswordInput;
 import com.example.demo.member.repository.MemberRepository;
 import com.example.demo.member.service.MemberService;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -92,7 +95,12 @@ public class MemberController {
   }
 
   @GetMapping("/member/info")
-  public String info(Model model, HttpServletRequest request) {
+  public String memberInfo(Model model, Principal principal) {
+
+    String userId = principal.getName();
+    MemberDto detail = memberService.detail(userId);
+
+    model.addAttribute("detail", detail);
 
     return "member/info";
   }
