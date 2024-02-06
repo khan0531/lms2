@@ -1,4 +1,4 @@
-package com.example.demo.course.service;
+package com.example.demo.course.service.impl;
 
 
 import com.example.demo.course.dto.CourseDto;
@@ -11,6 +11,7 @@ import com.example.demo.course.model.ServiceResult;
 import com.example.demo.course.model.TakeCourseInput;
 import com.example.demo.course.repository.CourseRepository;
 import com.example.demo.course.repository.TakeCourseRepository;
+import com.example.demo.course.service.CourseService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
