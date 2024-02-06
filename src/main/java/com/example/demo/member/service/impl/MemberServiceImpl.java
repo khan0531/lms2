@@ -6,6 +6,7 @@ import com.example.demo.admin.model.MemberParam;
 import com.example.demo.components.MailComponents;
 import com.example.demo.course.model.ServiceResult;
 import com.example.demo.member.entity.Member;
+import com.example.demo.member.entity.MemberCode;
 import com.example.demo.member.exception.MemberNotEmailAuthException;
 import com.example.demo.member.exception.MemberStopUserException;
 import com.example.demo.member.model.MemberInput;
@@ -36,6 +37,39 @@ public class MemberServiceImpl implements MemberService {
   private final MemberRepository memberRepository;
   private final MailComponents mailComponents;
   private final MemberMapper memberMapper;
+
+  @Override
+  public ServiceResult withdraw(String userId, String password) {
+
+    Optional<Member> optionalMember = memberRepository.findById(userId);
+    if (!optionalMember.isPresent()) {
+      return new ServiceResult(false, "회원 정보가 존재하지 않습니다.");
+    }
+
+    Member member = optionalMember.get();
+
+    if (!PasswordUtils.equals(password, member.getPassword())) {
+      return new ServiceResult(false, "비밀번호가 일치하지 않습니다.");
+    }
+
+    member.setUserName("삭제회원");
+    member.setPhone("");
+    member.setPassword("");
+    member.setRegDt(null);
+    member.setUdtDt(null);
+    member.setEmailAuthYn(false);
+    member.setEmailAuthDt(null);
+    member.setEmailAuthKey("");
+    member.setResetPasswordKey("");
+    member.setResetPasswordLimitDt(null);
+    member.setUserStatus(MemberCode.MEMBER_STATUS_WITHDRAW);
+    member.setZipcode("");
+    member.setAddr("");
+    member.setAddrDetail("");
+    memberRepository.save(member);
+
+    return new ServiceResult();
+  }
 
   @Override
   public ServiceResult updateMember(MemberInput parameter) {
