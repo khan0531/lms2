@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/lms?serverTimezone=UTC&characterEncoding=UTF-8
+    username: &lt;your-username&gt;
+    password: &lt;your-password&gt;
+
+  jpa:
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.MySQL5Dialect
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: &lt;your-email&gt;
+    password: &lt;your-password&gt;
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+
+mybatis:
+  mapper-locations: mybatis/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
